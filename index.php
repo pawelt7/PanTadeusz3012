@@ -16,7 +16,16 @@
 	</header>
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top mb-2 rounded">
 		<div class="">
-			<a class="navbar-brand" href="./index.php"> Strona główna</a>
+			<?php
+				if (isset($_GET['k'])) {
+					$k = $_GET['k'];
+				} else $k=0;
+				echo "
+				<a class='navbar-brand' href='./index.php'> Strona główna</a>
+				<a class='navbar-brand' href='./index.php?k=$k&n=dodaj'> Dodaj notatkę</a>
+				<a class='navbar-brand' href='./index.php?k=$k&n=lista'> Lista notatek</a>
+				";
+			?>
 		</div>
 	</nav>
 
@@ -38,13 +47,57 @@
 			</div>
 			<div class="col-md-8 col-sm-12">
 				<?php
-					$k = $_GET['k'];
-					require_once("./k$k.html");
+					if (isset($_GET['n'])) {
+						$n = $_GET['n'];
+						if ($n == "dodaj") {
+							// $k = $_GET['k'];
+							// echo "<p>Wartość k: $k</p>";
+							echo '
+							<form action="" method="POST">
+								<div class="form-group">
+									<label for="title">Tytuł notatki</label>
+									<input type="text" class="form-control" id="title" name="title">
+								</div>
+								<div class="form-group">
+									<label for="content">Treść notatki</label>
+									<textarea class="form-control" id="content" name="content" rows="3"></textarea>
+								</div>	
+								<button type="submit" class="btn btn-info float-right">Wyślij</button>
+							</form>
+							';
+						} elseif ($n == "lista") {
+							// $k = $_GET['k'];
+							// echo "<p>Wartość k: $k</p>";
+							echo '
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th scope="col">#</th>
+											<th scope="col">Tytuł</th>
+											<th scope="col">Treść</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th scope="row">1</th>
+											<td>Przykładowy tytuł</td>
+											<td>To jest treść przykładowej notatki</td>
+										</tr>
+									</tbody>
+								</table>
+							';
+						}
+					} elseif (isset($_GET['k'])) {
+						$k = $_GET['k'];
+						require_once("./k$k.html");
+					} else {
+						echo "<img src='./pan tadeusz.jpg' class='rounded mx-auto d-block border border-info p-2'>";
+					}
 				?>
 			</div>
 		</div>		
 	</div>
-	<footer class="container">
+	<footer class="container mt-5">
 		<p class="fixed-bottom alert alert-info">(c) Kataryzna Wójcik, Uniwersytet Ekonomiczny w Krakowie</p>
 	</footer>
 </body>
